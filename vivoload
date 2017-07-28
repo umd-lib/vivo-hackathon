@@ -1,0 +1,12 @@
+#!/bin/bash
+
+server=${VIVO_SERVER:-http://localhost:8080}
+endpoint="$server/vivo/api/sparqlUpdate"
+email=${VIVO_EMAIL:-vivo_root@umd.edu}
+password=$VIVO_PASSWORD
+
+for file in "$@"; do
+    sparql="INSERT DATA { GRAPH <http://vitro.mannlib.cornell.edu/default/vitro-kb-2> { $(cat "$file") } }"
+    curl -X POST "$endpoint" -d email="$email" -d password="$password" \
+        -d update="$sparql"
+done
