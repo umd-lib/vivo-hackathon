@@ -8,5 +8,5 @@ password=$VIVO_PASSWORD
 for file in "$@"; do
     sparql="INSERT DATA { GRAPH <http://vitro.mannlib.cornell.edu/default/vitro-kb-2> { $(cat "$file") } }"
     curl -X POST "$endpoint" -d email="$email" -d password="$password" \
-        -d update="$sparql"
+        --data-urlencode update="$sparql"
 done
