@@ -3,10 +3,12 @@
 import requests
 import sys
 import json
+import os
 
+OAUTH_TOKEN = os.environ['ORCID_OAUTH_TOKEN']
 BASEURL = "https://pub.sandbox.orcid.org/v2.0/"
 HEADERS = {
-    "Authorization": "Bearer 19fcc56c-e696-49cc-82eb-7ddef7e4a0de",
+    "Authorization": "Bearer {0}".format(OAUTH_TOKEN),
     "Accept": "application/json"
     }
 
