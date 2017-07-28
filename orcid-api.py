@@ -5,7 +5,7 @@ import sys
 import json
 import os
 
-OAUTH_TOKEN = os.environ['ORCID_OAUTH_TOKEN']
+OAUTH_TOKEN = os.getenv('ORCID_OAUTH_TOKEN', None)
 BASEURL = "https://pub.sandbox.orcid.org/v2.0/"
 HEADERS = {
     "Authorization": "Bearer {0}".format(OAUTH_TOKEN),
@@ -21,20 +21,23 @@ def print_header():
 
 
 def pretty_print_json(text):
-    '''take a string and print pretty json'''
+    '''Take a string and return pretty json string'''
     j = json.loads(text)
     pretty_dump = json.dumps(
         j, sort_keys=True, indent=4, separators=(',', ': ')
         )
-    print(pretty_dump)
+    return pretty_dump
 
 
 def main():
+    if OAUTH_TOKEN is None:
+	print("You must set ORCID_OAUTH_TOKEN environment variable.")
+        sys.exit(1)
     uri = BASEURL + sys.argv[1]
     print("Querying {0}...".format(uri))
     response = requests.get(uri, headers=HEADERS)
     print("Response: {0}".format(response.status_code))
-    pretty_print_json(response.text)
+    print(pretty_print_json(response.text))
 
 
 if __name__ == "__main__":
